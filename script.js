@@ -1,34 +1,60 @@
 // Mensaje inicial en la consola para indicar que el script se ha cargado correctamente.
-console.log('Banco digital')
+console.log("Banco digital");
 
 // Selección del elemento donde se mostrará el mensaje de respuesta.
-const cartelRespuesta = document.querySelector('h5')
+const cartelRespuesta = document.querySelector("h5");
 
 // Crear el objeto de cliente con la información inicial.
 // Cambia los valores según el caso que desees simular.
 const cliente = {
-  estadoCuenta: 'inactiva', // Cambiar a "activa" para simular cuenta activa.
-  nombre: 'Jane Doe',
-  fondos: 50 // Aumentar este valor para simular diferentes escenarios.
-}
+  estadoCuenta: "inactiva", // Cambiar a "activa" para simular cuenta activa.
+  nombre: "Jane Doe",
+  fondos: 50, // Aumentar este valor para simular diferentes escenarios.
+};
+cliente.estadoCuenta = "activa";
+cliente.fondos = 80;
+console.log(cliente);
 
 // Simulación de la promesa para consultar la cuenta del cliente.
 const consultarCuenta = new Promise((resolve, reject) => {
   // Mostramos el mensaje inicial de carga.
-  cartelRespuesta.innerHTML = 'Consultando datos del cliente...'
+  cartelRespuesta.innerHTML = "Consultando datos del cliente...";
 
   // Simulación de la consulta con un retraso de 3 segundos.
   setTimeout(() => {
+    mensaje={}
     // Condición para rechazar la promesa si la cuenta está inactiva.
-    if (cliente.estadoCuenta === 'inactiva') { reject(new Error({ mensaje: 'Su cuenta no está activa', status: '215' })) } else if (cliente.fondos < 100) { reject(new Error({ mensaje: 'Fondos insuficientes', status: '240' })) } else {
+    if (cliente.estadoCuenta === "inactiva") {
+      reject(({ 
+        mensaje: "Su cuenta no está activa",
+        status: "215", }));        
+    } else if (cliente.fondos < 100) {
+      reject(({ 
+        mensaje: "Fondos insuficientes",
+        status: "240", }));
+    } else {
       resolve({
-        mensaje: 'Pago realizado con éxito',
+        mensaje: "Pago realizado con éxito",
         fondos: cliente.fondos,
-        status: '200'
-      })
+        status: "200",
+      });
     }
-  }, 3000)
-})
+  }, 1000);
+});
+
+consultarCuenta
+  .then((data) => {
+    cartelRespuesta.innerHTML = data.mensaje;
+    cartelRespuesta.style.border = "3px solid green";
+  })
+  .catch((err) => {
+    cartelRespuesta.innerHTML = err.mensaje;
+    cartelRespuesta.style.border = "3px solid red";
+  })
+  .finally(() => {
+    console.log("Consulta finalizada.");
+  });
+
 
 // Manejo de la promesa.
 // ejecutar estas lineas si la promesa se resuelve exitosamente.
