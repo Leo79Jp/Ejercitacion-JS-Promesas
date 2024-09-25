@@ -11,8 +11,9 @@ const cliente = {
   nombre: "Jane Doe",
   fondos: 50, // Aumentar este valor para simular diferentes escenarios.
 };
+
 cliente.estadoCuenta = "activa";
-cliente.fondos = 80;
+cliente.fondos = 180;
 console.log(cliente);
 
 // Simulación de la promesa para consultar la cuenta del cliente.
@@ -22,7 +23,6 @@ const consultarCuenta = new Promise((resolve, reject) => {
 
   // Simulación de la consulta con un retraso de 3 segundos.
   setTimeout(() => {
-    mensaje={}
     // Condición para rechazar la promesa si la cuenta está inactiva.
     if (cliente.estadoCuenta === "inactiva") {
       reject(({ 
@@ -39,7 +39,7 @@ const consultarCuenta = new Promise((resolve, reject) => {
         status: "200",
       });
     }
-  }, 1000);
+  }, 3000);
 });
 
 consultarCuenta
